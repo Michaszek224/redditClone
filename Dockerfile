@@ -11,16 +11,17 @@ COPY . .
 COPY migrations ./migrations
 COPY templates ./templates
 
-RUN go build -o main .
+RUN go build -o /app/main ./cmd/app/main.go
 
 # Final lightweight image
 FROM alpine:latest
 
-WORKDIR /root/
+WORKDIR /app
+
 
 COPY --from=builder /app/main .
-COPY --from=builder /app/templates ./templates
 COPY --from=builder /app/migrations ./migrations
+COPY --from=builder /app/templates ./templates
 
 EXPOSE 8080
 

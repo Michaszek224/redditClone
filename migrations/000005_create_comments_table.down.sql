@@ -1,0 +1,2 @@
+ALTER TABLE comments DROP CONSTRAINT IF EXISTS fk_parent_comment;
+DROP TABLE IF EXISTS comments;

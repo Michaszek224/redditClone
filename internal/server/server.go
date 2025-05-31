@@ -1,27 +1,15 @@
-package main
+package server
 
 import (
 	"html/template"
 	"log"
 	"net/http"
-	"redditClone/db"
 )
 
+// Initialize the template variable
 var templ *template.Template
 
-func main() {
-	// Initialize the database connection
-	db.InitDB()
-
-	// Set up Http server and routes
-	http.HandleFunc("/", index)
-	log.Println("Starting server on :8080")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		log.Fatalf("Error starting server: %v", err)
-	}
-}
-
-func init() {
+func StartServer() {
 	// Parsing HTML templates
 	var err error
 	templ, err = template.ParseGlob("templates/*.html")
@@ -29,6 +17,12 @@ func init() {
 		log.Fatalf("Error parsing templates: %v", err)
 	}
 
+	// Handlers
+	http.HandleFunc("/", index)
+
+	// Starting the server
+	log.Println("Starting server on :8080")
+	http.ListenAndServe(":8080", nil)
 }
 
 func index(w http.ResponseWriter, r *http.Request) {
